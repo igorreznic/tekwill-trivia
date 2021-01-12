@@ -9,9 +9,13 @@ import static com.tekwill.learning.trivia.Questions.LEVEL_1_QUESTION_1;
 public class Game {
     public static boolean running = true;
     public static boolean notStarted = true;
-    public static boolean is_H1_Option = true;
-    public static boolean is_H2_Option = true;
-    public static boolean is_H3_Option = true;
+    public static boolean optionH1Available = true;
+    public static boolean optionH2Available = true;
+    public static boolean optionH3Available = true;
+
+    public static String displayH1option = " [H1] - Call a Friend,";
+    public static String displayH2option = " [H2] - Ask Auditory,";
+    public static String displayH3option = " [H3] - 50/50";
 
 
 
@@ -117,14 +121,20 @@ public class Game {
             String startKey = scanner.next();
             if (startKey.equals("START")) {
                 notStarted = false;
-                System.out.println("Let's begin...\n Chose the correct answer by typing [1], [2], [3] or [4]\n");
+                System.out.println("Let's begin...\n Chose the correct answer by typing [1], [2], [3], [4] or [H1], [H2], [H3] for HELP options.\n");
                 System.out.println("Here is the first question: ");
 
                 while (running) {
                     checkQuestion(questionNumber);
                     questionNumber++;
 
-                    System.out.println("\nYou have HELP options: [H1] - Call a Friend, [H2] - Ask Auditory, [H3] - 50/50");
+                        // Displaying HELP options
+                    if (optionH1Available || optionH2Available || optionH3Available) {
+                        System.out.println("\nYou have HELP options:" + displayH1option + displayH2option + displayH3option);
+                    }
+                    else{
+                        System.out.println("\nYou have used all Your HELP options.");
+                    }
 
                     boolean answered = false;
 
@@ -152,53 +162,56 @@ public class Game {
 
                         else if (givenAnswer.equals("H1") || givenAnswer.equals("H2") || givenAnswer.equals("H3")) {
 
-                            if (givenAnswer.equals("H1")) {
-                                is_H1_Option = false;
+                            if (givenAnswer.equals("H1") && optionH1Available) {
+                                optionH1Available = false;
+                                displayH1option = "";
                                 System.out.println("Calling Your Friend . . .");
                                 Thread.sleep(5000);
                                 System.out.println("Your Friend:\n I think the correct answer is " + correctAnswer);
                                 System.out.println();
                             }
-                            else if (givenAnswer.equals("H2")) {
-                                is_H2_Option = false;
+                            else if (givenAnswer.equals("H2") && optionH2Available) {
+                                optionH2Available = false;
+                                displayH2option = "";
                                 System.out.println("Auditory is voting . . .");
                                 Thread.sleep(5000);
                                 Random random = new Random();
-                                int votesFor_A = random.nextInt(25);
-                                int votesFor_B = random.nextInt(25);
-                                int votesFor_C = random.nextInt(25);
-                                int votesForCorrectAnswer = 100 - votesFor_A - votesFor_B - votesFor_C;
+                                int votesForAnIncorrectAnswer = random.nextInt(25);
+                                int votesForOtherIncorrectAnswer = random.nextInt(25);
+                                int votesForAnotherIncorrectAnswer = random.nextInt(25);
+                                int votesForCorrectAnswer = 100 - votesForAnIncorrectAnswer - votesForOtherIncorrectAnswer - votesForAnotherIncorrectAnswer;
 
                                 switch (correctAnswer) {
                                     case "1":
                                         System.out.println("1. " + votesForCorrectAnswer + "%");
-                                        System.out.println("2. " + votesFor_A + "%");
-                                        System.out.println("3. " + votesFor_B + "%");
-                                        System.out.println("4. " + votesFor_C + "%");
+                                        System.out.println("2. " + votesForAnIncorrectAnswer + "%");
+                                        System.out.println("3. " + votesForOtherIncorrectAnswer + "%");
+                                        System.out.println("4. " + votesForAnotherIncorrectAnswer + "%");
                                         break;
                                     case "2":
-                                        System.out.println("1. " + votesFor_A + "%");
+                                        System.out.println("1. " + votesForAnIncorrectAnswer + "%");
                                         System.out.println("2. " + votesForCorrectAnswer + "%");
-                                        System.out.println("3. " + votesFor_B + "%");
-                                        System.out.println("4. " + votesFor_C + "%");
+                                        System.out.println("3. " + votesForOtherIncorrectAnswer + "%");
+                                        System.out.println("4. " + votesForAnotherIncorrectAnswer + "%");
                                         break;
                                     case "3":
-                                        System.out.println("1. " + votesFor_A + "%");
-                                        System.out.println("2. " + votesFor_B + "%");
+                                        System.out.println("1. " + votesForAnIncorrectAnswer + "%");
+                                        System.out.println("2. " + votesForOtherIncorrectAnswer + "%");
                                         System.out.println("3. " + votesForCorrectAnswer + "%");
-                                        System.out.println("4. " + votesFor_C + "%");
+                                        System.out.println("4. " + votesForAnotherIncorrectAnswer + "%");
                                         break;
                                     case "4":
-                                        System.out.println("1. " + votesFor_A + "%");
-                                        System.out.println("2. " + votesFor_B + "%");
-                                        System.out.println("3. " + votesFor_C + "%");
+                                        System.out.println("1. " + votesForAnIncorrectAnswer + "%");
+                                        System.out.println("2. " + votesForOtherIncorrectAnswer + "%");
+                                        System.out.println("3. " + votesForAnotherIncorrectAnswer + "%");
                                         System.out.println("4. " + votesForCorrectAnswer + "%");
                                 }
 
 
                             }
-                            else {
-                                is_H3_Option = false;
+                            else if ((givenAnswer.equals("H3") && optionH3Available)) {
+                                optionH3Available = false;
+                                displayH3option = "";
                                 System.out.println("The computer removed two answers.\nChose from following two.");
                                 Random random = new Random();
 
@@ -221,6 +234,12 @@ public class Game {
                                 }
 
                             }
+                            else {
+                                System.out.println("You have used this option already, and You can't use it for the second time");
+                            }
+                        }
+                        else{
+                            System.out.println("Pay attention to the keyboard!!!");
                         }
                     }
 
