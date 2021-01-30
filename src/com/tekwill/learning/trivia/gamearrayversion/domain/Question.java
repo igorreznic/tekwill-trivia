@@ -20,10 +20,12 @@ public class Question {
 
     public Answer[] getAnswers(){return answers;}
 
+    public int getScore(){return score;}
+
     public Answer getCorrectAnswer(){
-        for(int i =0; i < answers.length; i++){
-            if(answers[i].isCorrect()){
-                return answers[i];
+        for (Answer answer : answers) {
+            if (answer.isCorrect()) {
+                return answer;
             }
         }
         return null;
@@ -42,9 +44,12 @@ public class Question {
     @Override
     public String toString(){
         return "  Question:  " + questionText +
-                "\n" + Arrays.toString(answers);
+                "\n" +getAnswers()[0] + "\n" +
+                getAnswers()[1] + "\n" +
+                getAnswers()[2] + "\n" +
+                getAnswers()[3];
 
     }
-
+//Arrays.toString(answers)
 
 }

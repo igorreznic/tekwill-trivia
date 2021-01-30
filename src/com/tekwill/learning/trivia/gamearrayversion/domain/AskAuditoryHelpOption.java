@@ -5,7 +5,7 @@ import java.util.Random;
 public class AskAuditoryHelpOption {
     private static boolean optionAvailable = true;
 
-    public void invoke(Question question) throws InterruptedException {
+    public static void invoke(Question question) throws InterruptedException {
         if (optionAvailable) {
             System.out.println("Auditory is voting . . .");
             Thread.sleep(3000);
@@ -26,7 +26,7 @@ public class AskAuditoryHelpOption {
                     j++;
                 }
             }
-            System.out.println();
+
             setOptionAvailable(false);
         }
         else System.out.println("Sorry!!! You have used this option already ");
@@ -34,5 +34,5 @@ public class AskAuditoryHelpOption {
 
     public static boolean isOptionAvailable(){ return optionAvailable; }
 
-    public void setOptionAvailable(boolean available){optionAvailable = available; }
+    public static void setOptionAvailable(boolean available){optionAvailable = available; }
 }
