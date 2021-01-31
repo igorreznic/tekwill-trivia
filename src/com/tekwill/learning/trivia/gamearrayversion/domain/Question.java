@@ -43,13 +43,11 @@ public class Question {
 
     @Override
     public String toString(){
-        return "  Question:  " + questionText +
-                "\n" +getAnswers()[0] + "\n" +
-                getAnswers()[1] + "\n" +
-                getAnswers()[2] + "\n" +
-                getAnswers()[3];
-
+        String question = "Question: " + questionText;
+        for(Answer answer : getAnswers()){
+            question = question.concat("\n" + answer);
+        }
+        return question;
     }
-//Arrays.toString(answers)
 
 }
